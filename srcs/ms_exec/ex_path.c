@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ex_path.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: njeanbou <njeanbou@student.42.fr>          +#+  +:+       +#+        */
+/*   By: vboxuser <vboxuser@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/13 11:26:14 by ichpakov          #+#    #+#             */
-/*   Updated: 2024/06/12 17:58:51 by njeanbou         ###   ########.fr       */
+/*   Updated: 2024/06/17 13:21:13 by vboxuser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,8 +59,6 @@ char	*get_path(char *cmd, char **env)
 
 	i = -1;
 	allpath = ft_split(my_getenv("PATH", env), ':');
-	if (!allpath)
-		return (NULL);
 	s_cmd = ft_split(cmd, ' ');
 	while (allpath[++i])
 	{
@@ -77,4 +75,32 @@ char	*get_path(char *cmd, char **env)
 	ft_free_tab(allpath);
 	ft_free_tab(s_cmd);
 	return (cmd);
+}
+
+int execve_checker(char **cmd)
+{
+    int        i;
+    char    *exec;
+    char    **allpath;
+    char    *path_part;
+
+    i = -1;
+    allpath = ft_split(getenv("PATH"), ':');
+	if (!allpath)
+		return (printf("error: command not found: %s\n", cmd[0]));
+    while (allpath[++i])
+    {
+        path_part = ft_strjoin(allpath[i], "/");
+        exec = ft_strjoin(path_part, cmd[0]);
+        free(path_part);
+        if (access(exec, F_OK | X_OK) == 0)
+        {
+            return (1);
+        }
+        free(exec);
+    }
+    ft_free_tab(allpath);
+	ft_putstr_fd("error: command not found: ", 2);
+	ft_putendl_fd(cmd[0], 2);
+    return (0);
 }

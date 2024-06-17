@@ -6,7 +6,7 @@
 /*   By: vboxuser <vboxuser@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/13 11:02:34 by ichpakov          #+#    #+#             */
-/*   Updated: 2024/06/14 15:51:35 by vboxuser         ###   ########.fr       */
+/*   Updated: 2024/06/17 14:54:43 by vboxuser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,17 +20,16 @@ void	ms_exec(t_params *cmds, char **env)
 	s_cmd = cmds->com;
 	path = get_path(s_cmd[0], env);
 	execve(path, s_cmd, env);
-	printf("ERROR\n");
-	ft_free_tab(env);
 	ft_putstr_fd("error: command not found: ", 2);
 	ft_putendl_fd(s_cmd[0], 2);
+	ft_free_tab(env);
 	exit(2);
 }
 
 
 static int	ms_redir_exec(t_data *data, t_params *cmds, t_put *puts, t_env **env)
 {
-	int		status;
+	int	status;
 
  	if (cmds->inp_red == entre1 || cmds->inp_red == entre2)
  		ms_input(data, puts);
@@ -96,19 +95,20 @@ int	ms_exec_loop(t_data *data, t_params **cmds, t_put *puts, t_env **env)
 	t_params	*t_cmds;
 	int			status;
 	int			saved_stdin;
+	int			saved_stdout;
 
 	saved_stdin = dup(STDIN_FILENO);
+	saved_stdout = dup(STDOUT_FILENO);
 	t_cmds = *cmds;
 	while (t_cmds != NULL)
 	{
-		//printf("AV REDIR\n");
 		status = ms_redir_exec(data, t_cmds, puts, env); //renvoie l'etat du resultat 
 		t_cmds = (*cmds)->next;
 	}
-	//printf("AP REDIR\n");
 	//free(t_cmds);
 	waitpid(data->pid, &status, 0);
 	dup2(saved_stdin, STDIN_FILENO);
+	dup2(saved_stdout, STDOUT_FILENO);
 	close(saved_stdin);
 	if ((*cmds)->inp_red == entre2)
 		supp_heredoc(data, env, puts);

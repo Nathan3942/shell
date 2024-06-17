@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: njeanbou <njeanbou@student.42.fr>          +#+  +:+       +#+         #
+#    By: vboxuser <vboxuser@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/04/02 04:50:58 by njeanbou          #+#    #+#              #
-#    Updated: 2024/06/12 17:56:23 by njeanbou         ###   ########.fr        #
+#    Updated: 2024/06/17 01:06:22 by vboxuser         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -18,7 +18,7 @@ OBJS = ${SRCS:.c=.o}
 
 CC = gcc
 
-CFLAGS = -Werror -Wextra -Wall -fsanitize=address -static-libasan -g
+CFLAGS = -Werror -Wextra -Wall -fsanitize=address -static-libasan
 
 #-fsanitize=address -static-libsan
 RM = rm -rf

@@ -6,7 +6,7 @@
 /*   By: vboxuser <vboxuser@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/12 15:51:36 by njeanbou          #+#    #+#             */
-/*   Updated: 2024/06/14 15:50:30 by vboxuser         ###   ########.fr       */
+/*   Updated: 2024/06/17 13:10:37 by vboxuser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,6 +113,7 @@ int		ms_mycmds(t_params *cmds);
 char	**get_env(t_env **env);
 void	ft_free_tab(char **tab);
 int		is_builded_cmd(char *cmd);
+int 	execve_checker(char **cmd);
 
 //utils
 char	*clean_input(char *raw_input);
