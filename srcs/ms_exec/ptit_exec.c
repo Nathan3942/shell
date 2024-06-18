@@ -6,7 +6,7 @@
 /*   By: vboxuser <vboxuser@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/13 11:02:34 by ichpakov          #+#    #+#             */
-/*   Updated: 2024/06/17 14:54:43 by vboxuser         ###   ########.fr       */
+/*   Updated: 2024/06/18 02:48:23 by vboxuser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,27 +90,52 @@ static void	supp_heredoc(t_data *data, t_env **env, t_put *puts)
 	free(rm);
 }
 
-int	ms_exec_loop(t_data *data, t_params **cmds, t_put *puts, t_env **env)
+int    ms_exec_loop(t_data *data, t_params **cmds, t_put *puts, t_env **env)
 {
-	t_params	*t_cmds;
-	int			status;
-	int			saved_stdin;
-	int			saved_stdout;
+    t_params	*t_cmds;
+    int			status;
+    int			saved_stdin;
+    int			saved_stdout;
 
-	saved_stdin = dup(STDIN_FILENO);
-	saved_stdout = dup(STDOUT_FILENO);
-	t_cmds = *cmds;
-	while (t_cmds != NULL)
-	{
-		status = ms_redir_exec(data, t_cmds, puts, env); //renvoie l'etat du resultat 
-		t_cmds = (*cmds)->next;
-	}
-	//free(t_cmds);
-	waitpid(data->pid, &status, 0);
-	dup2(saved_stdin, STDIN_FILENO);
-	dup2(saved_stdout, STDOUT_FILENO);
-	close(saved_stdin);
-	if ((*cmds)->inp_red == entre2)
-		supp_heredoc(data, env, puts);
-	return (status);
+    saved_stdin = dup(STDIN_FILENO);
+    saved_stdout = dup(STDOUT_FILENO);
+    t_cmds = *cmds;
+    while (t_cmds != NULL)
+    {
+        status = ms_redir_exec(data, t_cmds, puts, env); //renvoie l'etat du resultat 
+        t_cmds = t_cmds->next;
+    }
+    //free(t_cmds);
+    waitpid(data->pid, &status, 0);
+    dup2(saved_stdin, STDIN_FILENO);
+    dup2(saved_stdout, STDOUT_FILENO);
+    close(saved_stdin);
+    if ((*cmds)->inp_red == entre2)
+ 		supp_heredoc(data, env, puts);
+    return (status);
 }
+
+// int	ms_exec_loop(t_data *data, t_params **cmds, t_put *puts, t_env **env)
+// {
+// 	t_params	*t_cmds;
+// 	int			status;
+// 	int			saved_stdin;
+// 	int			saved_stdout;
+
+// 	saved_stdin = dup(STDIN_FILENO);
+// 	saved_stdout = dup(STDOUT_FILENO);
+// 	t_cmds = *cmds;
+// 	while (t_cmds != NULL)
+// 	{
+// 		status = ms_redir_exec(data, t_cmds, puts, env); //renvoie l'etat du resultat 
+// 		t_cmds = (*cmds)->next;
+// 	}
+// 	//free(t_cmds);
+// 	waitpid(data->pid, &status, 0);
+// 	dup2(saved_stdin, STDIN_FILENO);
+// 	dup2(saved_stdout, STDOUT_FILENO);
+// 	close(saved_stdin);
+// 	if ((*cmds)->inp_red == entre2)
+// 		supp_heredoc(data, env, puts);
+// 	return (status);
+// }

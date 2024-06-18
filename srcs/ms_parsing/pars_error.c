@@ -6,7 +6,7 @@
 /*   By: vboxuser <vboxuser@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/30 10:01:24 by njeanbou          #+#    #+#             */
-/*   Updated: 2024/06/14 15:32:50 by vboxuser         ###   ########.fr       */
+/*   Updated: 2024/06/17 23:06:34 by vboxuser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,11 @@ static int error_red(char **input)
 			if (input[i + 1][0] == '<' || input[i + 1][0] == '>'
 				|| input[i + 1][0] == '|')
 				return (1);
+			if (input[i][1] == '<' || input[i][1] == '>')
+			{
+				if (input[i][2] == '<' || input[i][1] == '>')
+					return (1);
+			}
 		}
 		i++;
 	}
