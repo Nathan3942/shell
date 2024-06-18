@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: njeanbou <njeanbou@student.42.fr>          +#+  +:+       +#+        */
+/*   By: vboxuser <vboxuser@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/27 14:52:31 by njeanbou          #+#    #+#             */
-/*   Updated: 2024/06/18 16:46:05 by njeanbou         ###   ########.fr       */
+/*   Updated: 2024/06/18 17:17:18 by vboxuser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,7 @@ void	init_data(t_params **para, t_put **put, t_data **data)
 	*put = (t_put *) malloc (sizeof(t_put));
 	*data = NULL;
 	*data = malloc(sizeof(t_data));
+	(*data)->fd_in = -2;
 	(*put)->input = NULL;
 	(*put)->output = NULL;
 }
@@ -48,10 +49,7 @@ void	loop_shell(t_params *para, t_env *lstenv, t_put *put, t_data *data)
 				add_history(input);
 			error = set_para(&para, input, &lstenv, &put);
 			if (error == 0 && para->com[0] != NULL)
-			{
-				//print_all(&para, &lstenv, &put);
 				add_var_status(&lstenv, ms_exec_loop(data, &para, put, &lstenv));
-			}
 			if (error != 0)
 			{
 				print_error(error);
@@ -62,7 +60,7 @@ void	loop_shell(t_params *para, t_env *lstenv, t_put *put, t_data *data)
 			else
 				free_all(&para, &put, &data);
 		}
-		else
+		else if (isatty(STDIN_FILENO) == 0)
 			exit(EXIT_FAILURE);
 	}
 }
@@ -96,7 +94,7 @@ int	main(int argc, char **argv, char **env)
 	para = NULL;
 	put = NULL;
 	data = NULL;
-	if (argc > 1 && argv[1] == NULL)
+	if (argc < 1 || argv[1] != NULL)
 		exit(EXIT_FAILURE);
 	lstenv = set_env(env);
 	incr_shlvl(&lstenv);
