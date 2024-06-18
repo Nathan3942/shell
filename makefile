@@ -6,7 +6,7 @@
 #    By: vboxuser <vboxuser@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/04/02 04:50:58 by njeanbou          #+#    #+#              #
-#    Updated: 2024/06/17 01:06:22 by vboxuser         ###   ########.fr        #
+#    Updated: 2024/06/18 13:27:34 by vboxuser         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -20,22 +20,35 @@ CC = gcc
 
 CFLAGS = -Werror -Wextra -Wall -fsanitize=address -static-libasan
 
-#-fsanitize=address -static-libsan
 RM = rm -rf
+
+# Colors:
+GREEN   = \e[92;5;118m
+YELLOW  = \e[93;5;226m
+RESET   = \e[0m
+CURSIVE = \e[33;3m
 
 all: ${NAME}
 
 ${NAME}: ${OBJS}
+				@printf "$(CURSIVE)- Compiling $(NAME)...$(RESET)\n"
 				@${MAKE} -C ./ms_libft
 				@${CC} ${CFLAGS} ${OBJS} ./ms_libft/libft.a -o ${NAME} -lreadline
+				@printf "$(GREEN)- Executable ready.$(RESET)\n"
+
+%.o: %.c
+				@${CC} ${CFLAGS} -c $< -o $@
 
 clean:
 				@${MAKE} -C ./ms_libft fclean
 				@${RM} ${OBJS}
+				@printf "$(YELLOW)- Executable removed.$(RESET)\n"
 
-fclean:	clean	
+fclean: clean
 				@${RM} ${NAME}
+				@printf "$(YELLOW)- Executable removed.$(RESET)\n"
 
-re:	fclean all
+re: fclean all
 
 .PHONY: all clean fclean re
+

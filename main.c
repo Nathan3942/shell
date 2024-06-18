@@ -6,7 +6,7 @@
 /*   By: vboxuser <vboxuser@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/27 14:52:31 by njeanbou          #+#    #+#             */
-/*   Updated: 2024/06/18 02:45:48 by vboxuser         ###   ########.fr       */
+/*   Updated: 2024/06/18 14:46:12 by vboxuser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ void	loop_shell(t_params *para, t_env *lstenv, t_put *put, t_data *data)
 			error = set_para(&para, input, &lstenv, &put);
 			if (error == 0 && para->com[0] != NULL)
 			{
-				//print_all(&para, &lstenv, &put);
+				print_all(&para, &lstenv, &put);
 				add_var_status(&lstenv, ms_exec_loop(data, &para, put, &lstenv));
 			}
 			if (error != 0)
@@ -62,6 +62,25 @@ void	loop_shell(t_params *para, t_env *lstenv, t_put *put, t_data *data)
 			else
 				free_all(&para, &put, &data);
 		}
+	}
+}
+
+static void	incr_shlvl(t_env **env)
+{
+	t_env	*head;
+	int		lvl;
+
+	head = *env;
+	while (head != NULL)
+	{
+		if (ft_strequal(head->env_name, "SHLVL") == 0)
+		{
+			lvl = ft_atoi(head->env_value);
+			lvl++;
+			free(head->env_value);
+			head->env_value = ft_itoa(lvl);
+		}
+		head = head->next;
 	}
 }
 
@@ -78,6 +97,7 @@ int	main(int argc, char **argv, char **env)
 	if (argc > 1 && argv[1] == NULL)
 		exit(EXIT_FAILURE);
 	lstenv = set_env(env);
+	incr_shlvl(&lstenv);
 	loop_shell(para, lstenv, put, data);
 	return (0);
 }

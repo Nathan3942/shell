@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: njeanbou <njeanbou@student.42.fr>          +#+  +:+       +#+         #
+#    By: vboxuser <vboxuser@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/10/30 16:19:31 by njeanbou          #+#    #+#              #
-#    Updated: 2024/04/02 05:15:18 by njeanbou         ###   ########.fr        #
+#    Updated: 2024/06/18 13:26:28 by vboxuser         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -21,18 +21,18 @@ LIBC 				= ar rcs
 RM 					= rm -f
 
 .c.o: 
-					${CC} ${CFLAGS} -c $< -o ${<:.c=.o}
+					@${CC} ${CFLAGS} -c $< -o ${<:.c=.o}
 
 ${NAME}:			${OBJS}
-					${LIBC} ${NAME} ${OBJS}
+					@${LIBC} ${NAME} ${OBJS}
 
-all: 				${NAME}
+all: 				@${NAME}
 
 clean:				
-					${RM} ${OBJS} ${OBJSB}
+					@${RM} ${OBJS} ${OBJSB}
 
 fclean:				clean
-					${RM} ${NAME} ${bonus}
+					@${RM} ${NAME} ${bonus}
 
 re:					fclean all
 

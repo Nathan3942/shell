@@ -6,7 +6,7 @@
 /*   By: vboxuser <vboxuser@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/13 11:02:34 by ichpakov          #+#    #+#             */
-/*   Updated: 2024/06/18 02:48:23 by vboxuser         ###   ########.fr       */
+/*   Updated: 2024/06/18 14:39:18 by vboxuser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,6 @@ void	ms_exec(t_params *cmds, char **env)
 	ft_free_tab(env);
 	exit(2);
 }
-
 
 static int	ms_redir_exec(t_data *data, t_params *cmds, t_put *puts, t_env **env)
 {

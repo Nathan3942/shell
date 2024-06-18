@@ -6,7 +6,7 @@
 /*   By: vboxuser <vboxuser@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/30 10:01:24 by njeanbou          #+#    #+#             */
-/*   Updated: 2024/06/17 23:06:34 by vboxuser         ###   ########.fr       */
+/*   Updated: 2024/06/18 13:50:19 by vboxuser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,10 +52,26 @@ static int error_red(char **input)
 				return (1);
 			if (input[i][1] == '<' || input[i][1] == '>')
 			{
-				if (input[i][2] == '<' || input[i][1] == '>')
+				if (input[i][2] == '<' || input[i][2] == '>')
 					return (1);
 			}
 		}
+		i++;
+	}
+	return (0);
+}
+
+int	error_ex(char **input)
+{
+	int	i;
+
+	i = 0;
+	while (input[i] != NULL)
+	{
+		if (ft_strequal(input[i], ".") == 0)
+			return (1);
+		if (ft_strequal(input[i], "./") == 0)
+			return (1);
 		i++;
 	}
 	return (0);
@@ -71,6 +87,8 @@ int	ft_error(char **input, bool for_free)
 		res = 1;
 	else if (error_heredoc(input) == 1)
 		res = 4;
+	else if (error_ex(input) == 1)
+		res = 1;
 	else
 		res = error_red(input);
 	if (for_free == true && res != 3)

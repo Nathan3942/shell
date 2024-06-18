@@ -6,7 +6,7 @@
 /*   By: vboxuser <vboxuser@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/13 11:26:14 by ichpakov          #+#    #+#             */
-/*   Updated: 2024/06/17 13:21:13 by vboxuser         ###   ########.fr       */
+/*   Updated: 2024/06/18 14:32:26 by vboxuser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,10 +93,9 @@ int execve_checker(char **cmd)
         path_part = ft_strjoin(allpath[i], "/");
         exec = ft_strjoin(path_part, cmd[0]);
         free(path_part);
-        if (access(exec, F_OK | X_OK) == 0)
-        {
+		if (access(exec, F_OK | X_OK) == 0 ||
+			(ft_strstr(cmd[0], "./") != NULL && access(cmd[0] + 1, F_OK | X_OK)))
             return (1);
-        }
         free(exec);
     }
     ft_free_tab(allpath);
