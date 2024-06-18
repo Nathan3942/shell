@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ex_path.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vboxuser <vboxuser@student.42.fr>          +#+  +:+       +#+        */
+/*   By: njeanbou <njeanbou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/13 11:26:14 by ichpakov          #+#    #+#             */
-/*   Updated: 2024/06/18 14:32:26 by vboxuser         ###   ########.fr       */
+/*   Updated: 2024/06/18 16:20:05 by njeanbou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,8 +95,8 @@ int execve_checker(char **cmd)
         free(path_part);
 		if (access(exec, F_OK | X_OK) == 0 ||
 			(ft_strstr(cmd[0], "./") != NULL && access(cmd[0] + 1, F_OK | X_OK)))
-            return (1);
-        free(exec);
+		    return (1);
+		free(exec);
     }
     ft_free_tab(allpath);
 	ft_putstr_fd("error: command not found: ", 2);

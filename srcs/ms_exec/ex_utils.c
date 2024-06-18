@@ -6,7 +6,7 @@
 /*   By: njeanbou <njeanbou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/27 13:31:24 by ichpakov          #+#    #+#             */
-/*   Updated: 2024/05/28 14:21:27 by njeanbou         ###   ########.fr       */
+/*   Updated: 2024/06/18 16:13:51 by njeanbou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,4 +39,22 @@ int	open_file(char *file, int in_or_out)
 	if (ret == -1)
 		exit(0);
 	return (ret);
+}
+
+int	check_exe(t_params **cmds)
+{
+	t_params	*head;
+	int			i;
+
+	i = -1;
+	head = *cmds;
+	while (head != NULL)
+	{
+		i++;
+		printf("%s\n", head->com[0]);
+		if (ft_strequal(head->com[0], "./minishell") == 0 && i > 0)
+			return (1);
+		head = head->next;
+	}
+	return (0);
 }
