@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ex_path.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: njeanbou <njeanbou@student.42.fr>          +#+  +:+       +#+        */
+/*   By: vboxuser <vboxuser@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/13 11:26:14 by ichpakov          #+#    #+#             */
-/*   Updated: 2024/06/18 16:20:05 by njeanbou         ###   ########.fr       */
+/*   Updated: 2024/06/19 16:12:58 by vboxuser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,7 +87,7 @@ int execve_checker(char **cmd)
     i = -1;
     allpath = ft_split(getenv("PATH"), ':');
 	if (!allpath)
-		return (printf("error: command not found: %s\n", cmd[0]));
+		return (printf(MSG_NOT_FOUND"%s\n", cmd[0]));
     while (allpath[++i])
     {
         path_part = ft_strjoin(allpath[i], "/");
@@ -99,7 +99,7 @@ int execve_checker(char **cmd)
 		free(exec);
     }
     ft_free_tab(allpath);
-	ft_putstr_fd("error: command not found: ", 2);
+	ft_putstr_fd(MSG_NOT_FOUND, 2);
 	ft_putendl_fd(cmd[0], 2);
     return (0);
 }

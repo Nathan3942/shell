@@ -6,7 +6,7 @@
 /*   By: vboxuser <vboxuser@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/30 10:01:24 by njeanbou          #+#    #+#             */
-/*   Updated: 2024/06/18 13:50:19 by vboxuser         ###   ########.fr       */
+/*   Updated: 2024/06/19 16:09:57 by vboxuser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,12 +96,14 @@ int	ft_error(char **input, bool for_free)
 	return (res);
 }
 
-void	print_error(int error)
+void	print_error(int error, char *input)
 {
 	if (error == 1)
-		printf("minishell: syntax error near unexpected token\n");
+		printf(MSG_SYNTAX);
 	if (error == 3)
-		printf("minishell: unclosed quote\n");
+		printf(MSG_QUOTE);
 	if (error == 4)
-		printf("minishell: two heredoc\n");
+		printf(MSG_HEREDOC);
+	if (error != 1 && error != 4 && error != 0)
+		free(input);
 }

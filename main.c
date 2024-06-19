@@ -6,7 +6,7 @@
 /*   By: vboxuser <vboxuser@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/27 14:52:31 by njeanbou          #+#    #+#             */
-/*   Updated: 2024/06/18 17:17:18 by vboxuser         ###   ########.fr       */
+/*   Updated: 2024/06/19 16:00:26 by vboxuser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,10 +52,8 @@ void	loop_shell(t_params *para, t_env *lstenv, t_put *put, t_data *data)
 				add_var_status(&lstenv, ms_exec_loop(data, &para, put, &lstenv));
 			if (error != 0)
 			{
-				print_error(error);
+				print_error(error, input);
 				free_error(&para, &put, &data);
-				if (error != 1 && error != 4 && error != 0)
-					free(input);
 			}
 			else
 				free_all(&para, &put, &data);
