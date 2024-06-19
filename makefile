@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: vboxuser <vboxuser@student.42.fr>          +#+  +:+       +#+         #
+#    By: njeanbou <njeanbou@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/04/02 04:50:58 by njeanbou          #+#    #+#              #
-#    Updated: 2024/06/18 16:49:00 by vboxuser         ###   ########.fr        #
+#    Updated: 2024/06/19 16:39:34 by njeanbou         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -18,13 +18,13 @@ OBJS = ${SRCS:.c=.o}
 
 CC = gcc
 
-CFLAGS = -Werror -Wextra -Wall -fsanitize=address -static-libasan
+CFLAGS = -Werror -Wextra -Wall -fsanitize=address -static-libsan
 
 RM = rm -rf
 
 # Colors:
-GREEN   = \e[92;5;118m
-YELLOW  = \e[93;5;226m
+GREEN   = \e[92;118m
+YELLOW  = \e[93;226m
 RESET   = \e[0m
 CURSIVE = \e[33;3m
 
@@ -34,7 +34,7 @@ ${NAME}: ${OBJS}
 				@printf "$(CURSIVE)- Compiling $(NAME)...$(RESET)\n"
 				@${MAKE} -C ./ms_libft
 				@${CC} ${CFLAGS} ${OBJS} ./ms_libft/libft.a -o ${NAME} -lreadline
-				@printf "$(GREEN)- Executable ready.$(RESET)\n"
+				@printf "$(GREEN)- Executable $(NAME) ready.$(RESET)\n"
 
 %.o: %.c
 				@${CC} ${CFLAGS} -c $< -o $@
@@ -42,11 +42,11 @@ ${NAME}: ${OBJS}
 clean:
 				@${MAKE} -C ./ms_libft fclean
 				@${RM} ${OBJS}
-				@printf "$(YELLOW)- Executable removed.$(RESET)\n"
+				@printf "$(YELLOW)- Object $(NAME) removed.$(RESET)\n"
 
 fclean: clean
 				@${RM} ${NAME}
-				@printf "$(YELLOW)- Executable removed.$(RESET)\n"
+				@printf "$(YELLOW)- Executable $(NAME) removed.$(RESET)\n"
 
 re: fclean all
 

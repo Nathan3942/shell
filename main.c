@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vboxuser <vboxuser@student.42.fr>          +#+  +:+       +#+        */
+/*   By: njeanbou <njeanbou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/27 14:52:31 by njeanbou          #+#    #+#             */
-/*   Updated: 2024/06/19 16:00:26 by vboxuser         ###   ########.fr       */
+/*   Updated: 2024/06/19 16:52:06 by njeanbou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ void	loop_shell(t_params *para, t_env *lstenv, t_put *put, t_data *data)
 				add_history(input);
 			error = set_para(&para, input, &lstenv, &put);
 			if (error == 0 && para->com[0] != NULL)
-				add_var_status(&lstenv, ms_exec_loop(data, &para, put, &lstenv));
+				add_status(&lstenv, ms_exec_loop(data, &para, put, &lstenv));
 			if (error != 0)
 			{
 				print_error(error, input);

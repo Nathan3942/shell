@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pars_error.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vboxuser <vboxuser@student.42.fr>          +#+  +:+       +#+        */
+/*   By: njeanbou <njeanbou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/30 10:01:24 by njeanbou          #+#    #+#             */
-/*   Updated: 2024/06/19 16:09:57 by vboxuser         ###   ########.fr       */
+/*   Updated: 2024/06/19 16:45:43 by njeanbou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ static int	error_heredoc(char **input)
 	return (0);
 }
 
-static int error_red(char **input)
+static int	error_red(char **input)
 {
 	int	i;
 

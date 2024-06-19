@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vboxuser <vboxuser@student.42.fr>          +#+  +:+       +#+        */
+/*   By: njeanbou <njeanbou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/12 15:51:36 by njeanbou          #+#    #+#             */
-/*   Updated: 2024/06/19 16:12:03 by vboxuser         ###   ########.fr       */
+/*   Updated: 2024/06/19 16:54:51 by njeanbou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,8 +39,8 @@
 # define MSG_ARG "error 4 : too many arguments\n"
 # define MSG_NOT_FOUND "error: command not found: "
 
-
-typedef enum e_operator {
+typedef enum e_operator
+{
 	none,
 	PIPE,
 	entre1,
@@ -49,19 +49,22 @@ typedef enum e_operator {
 	sortie2,
 }		t_operator;
 
-typedef struct s_put {
+typedef struct s_put
+{
 	char	*input;
 	char	*output;
 }	t_put;
 
-typedef struct s_params {
+typedef struct s_params
+{
 	char			**com;
 	t_operator		inp_red;
 	t_operator		out_red;
 	struct s_params	*next;
 }			t_params;
 
-typedef struct s_env {
+typedef struct s_env
+{
 	char			*env_name;
 	char			*env_value;
 	bool			is_exported;
@@ -100,7 +103,7 @@ int		count_red(char *str, int *i);
 int		red_len(char *str, int *i);
 int		quote_len(char *str, int *i);
 int		ft_error(char **input, bool for_free);
-void    free_error(t_params **para, t_put **put, t_data **data);
+void	free_error(t_params **para, t_put **put, t_data **data);
 void	print_error(int error, char *input);
 void	set_varbis(t_params **para, t_env **env);
 char	*mid_var(char *str, t_env **env);
@@ -122,7 +125,7 @@ int		ms_mycmds(t_params *cmds);
 char	**get_env(t_env **env);
 void	ft_free_tab(char **tab);
 int		is_builded_cmd(char *cmd);
-int 	execve_checker(char **cmd);
+int		execve_checker(char **cmd);
 int		check_exe(t_params **cmds);
 
 //utils
@@ -140,7 +143,7 @@ void	free_all(t_params **para, t_put **put, t_data **data);
 t_env	*ft_lstlast_env(t_env *lst);
 void	ft_lstadd_back_env(t_env **lst, t_env *new);
 int		ft_lstsize_env(t_env *lst);
-void	add_var_status(t_env **env, int status);
+void	add_status(t_env **env, int status);
 char	*ft_strdup_quote(const char *s1);
 
 #endif

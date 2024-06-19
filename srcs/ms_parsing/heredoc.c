@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vboxuser <vboxuser@student.42.fr>          +#+  +:+       +#+        */
+/*   By: njeanbou <njeanbou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/04 04:04:52 by njeanbou          #+#    #+#             */
-/*   Updated: 2024/06/14 14:42:14 by vboxuser         ###   ########.fr       */
+/*   Updated: 2024/06/19 16:44:49 by njeanbou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ static char	*update_doctmp(char *doc, char **doctmp, t_env **env)
 {
 	char	*docbis;
 	char	*var_tmp;
-	
+
 	docbis = NULL;
 	if (ft_strstr(doc, "$") != NULL)
 	{
@@ -61,7 +61,6 @@ static char	*update_doctmp(char *doc, char **doctmp, t_env **env)
 	free(doc);
 	return (*doctmp);
 }
-
 
 static char	*heredoc(char *exit, t_env **env)
 {
@@ -99,7 +98,7 @@ void	ft_doc(t_params **para, t_env **env, t_put **put)
 	head = *para;
 	exit = NULL;
 	if (head->inp_red == entre2)
-	{	
+	{
 		while (head->com[i] != NULL)
 		{
 			if (head->com[i][0] == '<')
