@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ptit_exec.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vboxuser <vboxuser@student.42.fr>          +#+  +:+       +#+        */
+/*   By: njeanbou <njeanbou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/13 11:02:34 by ichpakov          #+#    #+#             */
-/*   Updated: 2024/06/19 16:13:29 by vboxuser         ###   ########.fr       */
+/*   Updated: 2024/07/02 18:01:42 by njeanbou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,8 @@ static int	ms_redir_exec(t_data *data, t_params *cmds, t_put *puts, t_env **env)
 		data->pid = fork();
 		if (data->pid == 0)
 		{
+			signal(SIGINT, exec_signal);
+			signal(SIGQUIT, exec_signal);
 			if (cmds->out_red == PIPE)
 			{
 				if ((dup2(data->p_fd[1], STDOUT_FILENO) == -1 || close(data->p_fd[0]) == -1
@@ -70,7 +72,7 @@ static int	ms_redir_exec(t_data *data, t_params *cmds, t_put *puts, t_env **env)
 				return (exec_error(0));
 		}
 	}
-	return (WIFEXITED(status) && WEXITSTATUS(status));
+	return (WIFEXITED(status));
 }
 
 static void	supp_heredoc(t_data *data, t_env **env, t_put *puts)
@@ -99,12 +101,14 @@ int    ms_exec_loop(t_data *data, t_params **cmds, t_put *puts, t_env **env)
     saved_stdin = dup(STDIN_FILENO);
     saved_stdout = dup(STDOUT_FILENO);
     t_cmds = *cmds;
+	signal(SIGINT, exec_signal);
     while (t_cmds != NULL)
     {
         status = ms_redir_exec(data, t_cmds, puts, env); //renvoie l'etat du resultat 
         t_cmds = t_cmds->next;
     }
     waitpid(data->pid, &status, 0);
+	signal(SIGINT, handler_signal);
     dup2(saved_stdin, STDIN_FILENO);
     dup2(saved_stdout, STDOUT_FILENO);
     close(saved_stdin);
@@ -113,27 +117,3 @@ int    ms_exec_loop(t_data *data, t_params **cmds, t_put *puts, t_env **env)
     return (status);
 }
 
-// int	ms_exec_loop(t_data *data, t_params **cmds, t_put *puts, t_env **env)
-// {
-// 	t_params	*t_cmds;
-// 	int			status;
-// 	int			saved_stdin;
-// 	int			saved_stdout;
-
-// 	saved_stdin = dup(STDIN_FILENO);
-// 	saved_stdout = dup(STDOUT_FILENO);
-// 	t_cmds = *cmds;
-// 	while (t_cmds != NULL)
-// 	{
-// 		status = ms_redir_exec(data, t_cmds, puts, env); //renvoie l'etat du resultat 
-// 		t_cmds = (*cmds)->next;
-// 	}
-// 	//free(t_cmds);
-// 	waitpid(data->pid, &status, 0);
-// 	dup2(saved_stdin, STDIN_FILENO);
-// 	dup2(saved_stdout, STDOUT_FILENO);
-// 	close(saved_stdin);
-// 	if ((*cmds)->inp_red == entre2)
-// 		supp_heredoc(data, env, puts);
-// 	return (status);
-// }

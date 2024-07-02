@@ -58,3 +58,18 @@ int	check_exe(t_params **cmds)
 	}
 	return (0);
 }
+
+pid_t	ft_getpid(void) {
+    pid_t pid;
+
+    // Appel système pour obtenir le PID
+    __asm__ ("mov $20, %%eax\n\t"  // 20 est un numéro d'appel système pour getpid() sur x86
+             "int $0x80\n\t"       // Appel au noyau via l'interruption 0x80
+             "mov %%eax, %0"       // Récupérer la valeur de retour dans pid
+             : "=r" (pid)          // Sortie : pid
+             :                     // Pas d'entrée
+             : "%eax"              // Utilisation du registre %eax
+            );
+
+    return pid;
+}

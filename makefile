@@ -6,13 +6,13 @@
 #    By: njeanbou <njeanbou@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/04/02 04:50:58 by njeanbou          #+#    #+#              #
-#    Updated: 2024/06/19 16:39:34 by njeanbou         ###   ########.fr        #
+#    Updated: 2024/07/02 17:33:47 by njeanbou         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = minishell
 
-SRCS = $(wildcard srcs/ms_utils/*.c srcs/ms_parsing/*.c srcs/ms_exec/*.c srcs/ms_cmds/*.c srcs/ms_errors/*.c main.c)
+SRCS = $(wildcard srcs/ms_utils/*.c srcs/ms_parsing/*.c srcs/ms_exec/*.c srcs/ms_cmds/*.c srcs/ms_errors/*.c srcs/ms_signal/*.c main.c)
 
 OBJS = ${SRCS:.c=.o}
 

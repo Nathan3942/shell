@@ -6,7 +6,7 @@
 /*   By: njeanbou <njeanbou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/12 15:51:36 by njeanbou          #+#    #+#             */
-/*   Updated: 2024/06/19 16:54:51 by njeanbou         ###   ########.fr       */
+/*   Updated: 2024/07/02 17:56:33 by njeanbou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
 # include "../ms_libft/libft.h"
 
 # include <readline/readline.h>
+#include <readline/readline.h>
 # include <readline/history.h>
 
 # include <stdbool.h>
@@ -112,6 +113,10 @@ char	**mid_var_env(char **split_str, t_env **env);
 //error
 int		exec_error(int num);
 
+//signal
+void	exec_signal(int signal);
+void	handler_signal(int signal);
+
 //exec
 int		ms_exec_loop(t_data *data, t_params **cmds, t_put *puts, t_env **env);
 int		ms_exec_class(t_params *cmds, t_env **env, t_data **data, t_put *puts);
@@ -127,6 +132,7 @@ void	ft_free_tab(char **tab);
 int		is_builded_cmd(char *cmd);
 int		execve_checker(char **cmd);
 int		check_exe(t_params **cmds);
+pid_t	ft_getpid(void);
 
 //utils
 char	*clean_input(char *raw_input);

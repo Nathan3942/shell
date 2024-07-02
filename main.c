@@ -6,7 +6,7 @@
 /*   By: njeanbou <njeanbou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/27 14:52:31 by njeanbou          #+#    #+#             */
-/*   Updated: 2024/06/19 16:52:06 by njeanbou         ###   ########.fr       */
+/*   Updated: 2024/07/02 18:01:59 by njeanbou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,11 @@ static char	*get_input(void)
 	raw_input = readline("minishell$ ");
 	input = clean_input(raw_input);
 	free(raw_input);
+	if (input != NULL && input[0] != ' ')
+	{
+		if (ft_strstr(input, "<<") == NULL)
+			add_history(input);
+	}
 	return (input);
 }
 
@@ -34,6 +39,7 @@ void	init_data(t_params **para, t_put **put, t_data **data)
 	(*put)->output = NULL;
 }
 
+
 void	loop_shell(t_params *para, t_env *lstenv, t_put *put, t_data *data)
 {
 	int		error;
@@ -42,11 +48,9 @@ void	loop_shell(t_params *para, t_env *lstenv, t_put *put, t_data *data)
 	while (1)
 	{
 		input = get_input();
-		if (input != NULL)
+		if (input != NULL && input[0] != ' ')
 		{
 			init_data(&para, &put, &data);
-			if (ft_strstr(input, "<<") == NULL)
-				add_history(input);
 			error = set_para(&para, input, &lstenv, &put);
 			if (error == 0 && para->com[0] != NULL)
 				add_status(&lstenv, ms_exec_loop(data, &para, put, &lstenv));
@@ -59,7 +63,9 @@ void	loop_shell(t_params *para, t_env *lstenv, t_put *put, t_data *data)
 				free_all(&para, &put, &data);
 		}
 		else if (isatty(STDIN_FILENO) == 0)
-			exit(EXIT_FAILURE);
+			exit(EXIT_SUCCESS);
+		else if (input == NULL)
+			return ((void)printf("\nExit\n"));
 	}
 }
 
@@ -92,6 +98,8 @@ int	main(int argc, char **argv, char **env)
 	para = NULL;
 	put = NULL;
 	data = NULL;
+	signal(SIGINT, handler_signal);
+	signal(SIGQUIT, SIG_IGN);
 	if (argc < 1 || argv[1] != NULL)
 		exit(EXIT_FAILURE);
 	lstenv = set_env(env);
