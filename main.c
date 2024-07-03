@@ -6,7 +6,7 @@
 /*   By: njeanbou <njeanbou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/27 14:52:31 by njeanbou          #+#    #+#             */
-/*   Updated: 2024/07/02 18:01:59 by njeanbou         ###   ########.fr       */
+/*   Updated: 2024/07/03 15:15:03 by njeanbou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,6 @@ void	init_data(t_params **para, t_put **put, t_data **data)
 	(*put)->output = NULL;
 }
 
-
 void	loop_shell(t_params *para, t_env *lstenv, t_put *put, t_data *data)
 {
 	int		error;
@@ -48,7 +47,7 @@ void	loop_shell(t_params *para, t_env *lstenv, t_put *put, t_data *data)
 	while (1)
 	{
 		input = get_input();
-		if (input != NULL && input[0] != ' ')
+		if (input != NULL)
 		{
 			init_data(&para, &put, &data);
 			error = set_para(&para, input, &lstenv, &put);
@@ -98,12 +97,11 @@ int	main(int argc, char **argv, char **env)
 	para = NULL;
 	put = NULL;
 	data = NULL;
-	signal(SIGINT, handler_signal);
-	signal(SIGQUIT, SIG_IGN);
 	if (argc < 1 || argv[1] != NULL)
 		exit(EXIT_FAILURE);
 	lstenv = set_env(env);
 	incr_shlvl(&lstenv);
+	signal(SIGINT, handler_signal);
 	loop_shell(para, lstenv, put, data);
 	return (0);
 }

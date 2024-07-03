@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ex_utils.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: njeanbou <njeanbou@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ichpakov <ichpakov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/27 13:31:24 by ichpakov          #+#    #+#             */
-/*   Updated: 2024/06/19 16:50:01 by njeanbou         ###   ########.fr       */
+/*   Updated: 2024/07/03 14:05:33 by ichpakov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,18 +58,17 @@ int	check_exe(t_params **cmds)
 	}
 	return (0);
 }
+// pid_t	ft_getpid(void) {
+//     pid_t pid;
 
-pid_t	ft_getpid(void) {
-    pid_t pid;
-
-    // Appel système pour obtenir le PID
-    __asm__ ("mov $20, %%eax\n\t"  // 20 est un numéro d'appel système pour getpid() sur x86
-             "int $0x80\n\t"       // Appel au noyau via l'interruption 0x80
-             "mov %%eax, %0"       // Récupérer la valeur de retour dans pid
-             : "=r" (pid)          // Sortie : pid
-             :                     // Pas d'entrée
-             : "%eax"              // Utilisation du registre %eax
-            );
-
-    return pid;
-}
+//     // Appel système pour obtenir le PID
+// 	__asm__ ("mov $20, %%eax\n\t" 
+// 20 est un numéro d'appel système pour getpid() sur x86
+// 			 "int $0x80\n\t"       // Appel au noyau via l'interruption 0x80
+// 			 "mov %%eax, %0"       // Récupérer la valeur de retour dans pid
+// 			 : "=r" (pid)          // Sortie : pid
+// 			 :                     // Pas d'entrée
+// 			 : "%eax"              // Utilisation du registre %eax
+// 			);
+// 	return pid;
+// }

@@ -6,7 +6,7 @@
 /*   By: njeanbou <njeanbou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/12 15:51:36 by njeanbou          #+#    #+#             */
-/*   Updated: 2024/07/02 17:56:33 by njeanbou         ###   ########.fr       */
+/*   Updated: 2024/07/03 15:17:33 by njeanbou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,6 @@
 # include "../ms_libft/libft.h"
 
 # include <readline/readline.h>
-#include <readline/readline.h>
 # include <readline/history.h>
 
 # include <stdbool.h>
@@ -133,6 +132,7 @@ int		is_builded_cmd(char *cmd);
 int		execve_checker(char **cmd);
 int		check_exe(t_params **cmds);
 pid_t	ft_getpid(void);
+int		ms_redir_exec(t_data *data, t_params *cmds, t_put *puts, t_env **env);
 
 //utils
 char	*clean_input(char *raw_input);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ptit_exec.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: njeanbou <njeanbou@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ichpakov <ichpakov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/13 11:02:34 by ichpakov          #+#    #+#             */
-/*   Updated: 2024/07/02 18:01:42 by njeanbou         ###   ########.fr       */
+/*   Updated: 2024/07/03 13:59:42 by ichpakov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,52 +26,55 @@ void	ms_exec(t_params *cmds, char **env)
 	exit(2);
 }
 
-static int	ms_redir_exec(t_data *data, t_params *cmds, t_put *puts, t_env **env)
+static int	ms_fork(t_data *data, t_params *cmds, t_put *puts, t_env **env)
+{
+	data->pid = fork();
+	if (data->pid == 0)
+	{
+		if (cmds->out_red == PIPE)
+		{
+			if ((dup2(data->p_fd[1], STDOUT_FILENO) == -1
+					|| close(data->p_fd[0]) == -1))//|| close(data->p_fd[1]) == -1)
+				return (exec_error(0));
+		}
+		else if (cmds->out_red == sortie1)
+			ms_output(data, puts, 1);
+		else if (cmds->out_red == sortie2)
+			ms_output(data, puts, 2);
+		ms_exec_class(cmds, env, &data, puts);
+		exit(0);
+	}
+	if (cmds->out_red == PIPE)
+	{
+		if (dup2(data->p_fd[0], STDIN_FILENO) == -1
+			|| close(data->p_fd[0]) == -1 || close(data->p_fd[1]) == -1)
+			return (exec_error(0));
+	}
+	return (0);
+}
+
+int	ms_redir_exec(t_data *data, t_params *cmds, t_put *puts, t_env **env)
 {
 	int	status;
 
- 	if (cmds->inp_red == entre1 || cmds->inp_red == entre2)
- 		ms_input(data, puts);
- 	if (cmds->out_red == PIPE)
- 	{
- 		if (pipe(data->p_fd) == -1)
- 			return (exec_error(0));
- 	}
-	if ((cmds->inp_red != PIPE) && (cmds->out_red != PIPE) 
+	if (cmds->inp_red == entre1 || cmds->inp_red == entre2)
+		ms_input(data, puts);
+	if (cmds->out_red == PIPE)
+	{
+		if (pipe(data->p_fd) == -1)
+			return (exec_error(0));
+	}
+	if ((cmds->inp_red != PIPE) && (cmds->out_red != PIPE)
 		&& is_builded_cmd(cmds->com[0]))
 	{
 		if (cmds->out_red == sortie1)
- 			ms_output(data, puts, 1);
- 		else if (cmds->out_red == sortie2)
- 			ms_output(data, puts, 2);
+			ms_output(data, puts, 1);
+		else if (cmds->out_red == sortie2)
+			ms_output(data, puts, 2);
 		ms_exec_class(cmds, env, &data, puts);
 	}
-	else {
-		data->pid = fork();
-		if (data->pid == 0)
-		{
-			signal(SIGINT, exec_signal);
-			signal(SIGQUIT, exec_signal);
-			if (cmds->out_red == PIPE)
-			{
-				if ((dup2(data->p_fd[1], STDOUT_FILENO) == -1 || close(data->p_fd[0]) == -1
-					|| close(data->p_fd[1]) == -1))
-					return(exec_error(0));
-			}
-			else if (cmds->out_red == sortie1)
-				ms_output(data, puts, 1);
-			else if (cmds->out_red == sortie2)
-				ms_output(data, puts, 2);
-			ms_exec_class(cmds, env, &data, puts);
-			exit(0);
-		}
-		if (cmds->out_red == PIPE)
-		{
-			if (dup2(data->p_fd[0], STDIN_FILENO) == -1 || close(data->p_fd[0]) == -1
-					|| close(data->p_fd[1]) == -1)
-				return (exec_error(0));
-		}
-	}
+	else
+		ms_fork(data, cmds, puts, env);
 	return (WIFEXITED(status));
 }
 
@@ -91,29 +94,28 @@ static void	supp_heredoc(t_data *data, t_env **env, t_put *puts)
 	free(rm);
 }
 
-int    ms_exec_loop(t_data *data, t_params **cmds, t_put *puts, t_env **env)
+int	ms_exec_loop(t_data *data, t_params **cmds, t_put *puts, t_env **env)
 {
-    t_params	*t_cmds;
-    int			status;
-    int			saved_stdin;
-    int			saved_stdout;
+	t_params	*t_cmds;
+	int			status;
+	int			saved_stdin;
+	int			saved_stdout;
 
-    saved_stdin = dup(STDIN_FILENO);
-    saved_stdout = dup(STDOUT_FILENO);
-    t_cmds = *cmds;
+	saved_stdin = dup(STDIN_FILENO);
+	saved_stdout = dup(STDOUT_FILENO);
+	t_cmds = *cmds;
 	signal(SIGINT, exec_signal);
-    while (t_cmds != NULL)
-    {
-        status = ms_redir_exec(data, t_cmds, puts, env); //renvoie l'etat du resultat 
-        t_cmds = t_cmds->next;
-    }
-    waitpid(data->pid, &status, 0);
+	while (t_cmds != NULL)
+	{
+		status = ms_redir_exec(data, t_cmds, puts, env);
+		t_cmds = t_cmds->next;
+	}
+	waitpid(data->pid, &status, 0);
 	signal(SIGINT, handler_signal);
-    dup2(saved_stdin, STDIN_FILENO);
-    dup2(saved_stdout, STDOUT_FILENO);
-    close(saved_stdin);
-    if ((*cmds)->inp_red == entre2)
- 		supp_heredoc(data, env, puts);
-    return (status);
+	dup2(saved_stdin, STDIN_FILENO);
+	dup2(saved_stdout, STDOUT_FILENO);
+	close(saved_stdin);
+	if ((*cmds)->inp_red == entre2)
+		supp_heredoc(data, env, puts);
+	return (status);
 }
-
